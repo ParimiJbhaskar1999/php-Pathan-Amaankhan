@@ -5,7 +5,7 @@
     if( isset( $_POST['email']  ) && isset( $_POST['otp'] ) ) {
         $email       = $_POST['email'];
         $otp         = $_POST['otp'];
-        $user = new User( $email );
+        $user        = new User( $email );
         $verified    = $user->verify_otp( $email, $otp );
 
         if( $verified === 'success' ) {

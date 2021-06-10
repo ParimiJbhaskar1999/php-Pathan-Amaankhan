@@ -17,7 +17,7 @@
         }
 
         public static function get_value( $session_name ) {
-            if ( Session::check( $session_name ) ) {
+            if ( self::check( $session_name ) ) {
                 return $_SESSION[ $session_name ];
             } else {
                 return null;

@@ -8,27 +8,27 @@
         private static $otp_session_name = 'start_time';
 
         public static function get_db_host() {
-            return Constants::$db_host;
+            return self::$db_host;
         }
 
         public static function get_db_user() {
-            return Constants::$db_user;
+            return self::$db_user;
         }
 
         public static function get_db_password() {
-            return Constants::$db_password;
+            return self::$db_password;
         }
 
         public static function get_db_name() {
-            return Constants::$db_name;
+            return self::$db_name;
         }
 
         public static function get_user_table() {
-            return Constants::$user_table;
+            return self::$user_table;
         }
 
         public static function get_otp_session_name() {
-            return Constants::$otp_session_name;
+            return self::$otp_session_name;
         }
     }
 ?>

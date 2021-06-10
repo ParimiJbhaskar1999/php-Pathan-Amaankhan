@@ -5,7 +5,10 @@
     require_once __DIR__ . '/class-session.php';
 
     class User {
-        private $email, $db_connection, $table, $session_name;
+        private $email;
+        private $db_connection;
+        private $table;
+        private $session_name;
 
         public function  __construct( $email ) {
             $this->email         = $email;
@@ -51,7 +54,7 @@
             $mail_send = mail( $email, $subject, $message );
             $creation  = $this->create_user( $email, $otp );
 
-            if( $mail_send && $creation === 'success' ) {
+            if( $mail_send && $creation === 'success' && isset( $_SERVER['REQUEST_TIME'] ) ) {
                 Session::start( $this->session_name, $_SERVER['REQUEST_TIME'] );
                 return 'success';
             } else {
@@ -60,7 +63,7 @@
         }
 
         public function verify_otp( $email, $otp ) {
-            if( Session::check( $this->session_name ) === 'is_set' ) {
+            if( Session::check( $this->session_name ) === 'is_set' && isset( $_SERVER['REQUEST_TIME'] ) ) {
                 $timestamp         =  $_SERVER['REQUEST_TIME'];
                 $session_timestamp = Session::get_value( $this->session_name );
 

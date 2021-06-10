@@ -4,7 +4,7 @@
 
     if( isset( $_POST['email']  ) ) {
         $email       = $_POST['email'];
-        $user = new User( $email );
+        $user        = new User( $email );
         $mail_send   = $user->send_verification_email();
 
         if( $mail_send === 'success' ) {
