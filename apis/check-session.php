@@ -1,7 +1,7 @@
 <?php
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/php-Pathan-Amaankhan/classes/class-session.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/php-Pathan-Amaankhan/classes/class-constants.php';
-    include $_SERVER['DOCUMENT_ROOT'] . '/php-Pathan-Amaankhan/headers.php';
+    require_once dirname( __DIR__ ) . '/classes/class-session.php';
+    require_once dirname( __DIR__ ) . '/classes/class-constants.php';
+    require_once dirname( __DIR__ ) . '/headers.php';
 
     if( Session::check( Constants::get_otp_session_name() ) === 'is_set' ) {
         $response = array(

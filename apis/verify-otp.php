@@ -1,6 +1,6 @@
 <?php
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/php-Pathan-Amaankhan/classes/class-user.php';
-    include $_SERVER['DOCUMENT_ROOT'] . '/php-Pathan-Amaankhan/headers.php';
+    require_once dirname( __DIR__ ) . '/classes/class-user.php';
+    require_once dirname( __DIR__ ) . '/headers.php';
 
     if( isset( $_POST['email']  ) && isset( $_POST['otp'] ) ) {
         $email       = $_POST['email'];
