@@ -1,6 +1,7 @@
 class ApiCalls {
     constructor() {
         this.url = '';
+        this.current_comic_number = 0;
         this.headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -81,7 +82,6 @@ class ApiCalls {
     }
 }
 
-let comic_number    = 0;
 const api_call      = new ApiCalls();
 const otp_input     = document.getElementById( 'otp' );
 const email_input   = document.getElementById( 'email' );
@@ -90,9 +90,8 @@ const comic_title   = document.getElementById( 'comic-title' );
 const popup_msg     = document.getElementById( 'popup-msg' );
 const popup_msg_box = document.getElementById( 'popup-msg-box' );
 
-    let check_session = function () {
+let check_session = function () {
     api_call.check_session().then( is_session_available => {
-        console.log(is_session_available);
         if ( is_session_available ) {
             otp_input.style.display       = 'block';
             otp_input.attributes.required = 'required';
@@ -109,35 +108,35 @@ let set_comic = function ( comic_number = 0 ) {
 
     api_call.get_random_comic( comic_number ).then( comic => {
         if ( Object.entries( comic ).length !== 0 ) {
-            comic_number          =  comic.num;
-            comic_img.src         = comic.img;
-            comic_title.innerText = comic.title;
+            api_call.current_comic_number = comic.num;
+            comic_img.src                 = comic.img;
+            comic_title.innerText         = comic.title;
         } else {
-            comic_number        = 0;
-            comic_img.src       = 'assets/images/error.jpg';
-            comic_img.innerText = 'Cannot Load Comic';
+            api_call.current_comic_number = 0;
+            comic_img.src                 = 'assets/images/error.jpg';
+            comic_img.innerText           = 'Cannot Load Comic';
         }
     } );
 }
 
 let get_next_comic = function () {
-    if ( comic_number < 2475 ) {
-        comic_number++;
+    if ( api_call.current_comic_number < 2475 ) {
+        api_call.current_comic_number++;
     } else {
-        comic_number = 1;
+        api_call.current_comic_number = 1;
     }
 
-    set_comic( comic_number );
+    set_comic( api_call.current_comic_number );
 }
 
 let get_prev_comic = function () {
-    if ( comic_number > 1 ) {
-        comic_number--;
+    if ( api_call.current_comic_number > 1 ) {
+        api_call.current_comic_number--;
     } else {
-        comic_number = 2475;
+        api_call.current_comic_number = 2475;
     }
 
-    set_comic( comic_number );
+    set_comic( api_call.current_comic_number );
 }
 
 let verify_mail = function () {
