@@ -12,8 +12,9 @@
             curl_setopt( $this->curl, CURLOPT_RETURNTRANSFER, true );
 
             $response = curl_exec( $this->curl );
+            $error    = curl_error( $this->curl );
 
-            if ( $error = curl_error( $this->curl ) ) {
+            if ( ! empty( $error )  ) {
                 return $error;
             } else {
                 return json_decode( $response );
