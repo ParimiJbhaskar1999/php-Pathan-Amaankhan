@@ -1,44 +1,71 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Comic Mailer</title>
-</head>
+    <title> Comic Mailer </title>
 
-<body>
-<form action="apis/send-verification-mail.php" id="verification-form" method="POST">
-  <label for="email">Enter Email ID: </label>
-  <input type="email" name="email" id="email" placeholder="Enter Email ID" required/>
-  <br><br>
-  <div id="otp-div" style="display: none">
-    <label for="otp">Enter OTP: </label>
-    <input type="number" name="otp" id="otp" placeholder="Enter otp"/>
-    <br><br>
-  </div>
-  <button type="submit" name="submit">Submit</button>
-</form>
-</body>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
 
-<script>
-  let headers = {
-    headers : {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
-  };
-  fetch("apis/check-session.php", headers)
-          .then(response => response.json())
-          .then(body => {
-            if(body.success) {
-              document.getElementById('otp-div').style.display = 'block';
-              document.getElementById('verification-form').action = 'apis/verify-otp.php';
-            }
-          });
+  <body class="grid">
+    <div id="popup-msg-box">
+      <span id="popup-msg"> </span>
+      <img src="assets/icons/close-white.png" alt="close" onclick="close_popup()" />
+    </div>
+    <h2 class="container a"> COMIC MAILER </h2>
 
-</script>
+    <div class="c">
+      <div class="container">
+        <h3 id="comic-title"> Loading </h3>
+      </div>
 
+      <div class="container">
+        <button class="only-on-large-screens" onclick="set_comic()"> Random </button>
+
+        <div class="only-on-small-screens">
+          <button onclick="get_prev_comic()"> Prev </button>
+          <button onclick="get_next_comic()"> Next </button>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <img class="navigation-img only-on-large-screens"
+               src="assets/icons/left-arrow.png"
+               alt="left"
+               onclick="get_prev_comic()" />
+
+          <img id="comic-img" src="assets/images/loading.jpg" />
+
+          <img class="navigation-img only-on-large-screens"
+               src="assets/icons/right-arrow.png"
+               alt="right"
+               onclick="get_next_comic()" />
+        </div>
+
+        <button onclick="set_comic()"> Random </button>
+      </div>
+    </div>
+
+    <div class="container b">
+      <h3> Subscribe to service </h3>
+
+      <input type="email" id="email" placeholder="Enter Email ID" required="required" />
+
+      <input type="number" id="otp" placeholder="Enter OTP" />
+
+      <button onclick="verify_mail()"> Verify </button>
+      <p>
+        This service sends the comic as mail in every 5 minutes.
+        To subscribe the service please verify your email above.
+      </p>
+    </div>
+
+  </body>
+
+  <script type="text/javascript" src="main.js"></script>
 </html>
