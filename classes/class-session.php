@@ -1,4 +1,6 @@
 <?php
+    require_once __DIR__ . '/class-user.php';
+
     Class Session {
         public static function start( $session_name, $session_value ) {
             $_SESSION[ $session_name ] = $session_value;
@@ -21,6 +23,15 @@
                 return $_SESSION[ $session_name ];
             } else {
                 return null;
+            }
+        }
+
+        public static function is_login_session_valid() {
+            $user = new User;
+            if ( $user->is_otp_valid() ) {
+                return true;
+            } else {
+                return false;
             }
         }
     }

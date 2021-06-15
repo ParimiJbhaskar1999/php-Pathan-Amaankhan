@@ -1,4 +1,6 @@
 <?php
+    require_once __DIR__ . '/class-constants.php';
+
     class Database {
         private $connection;
 
