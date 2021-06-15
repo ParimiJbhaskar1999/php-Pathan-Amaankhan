@@ -1,9 +1,9 @@
 <?php
     require_once dirname( __DIR__ ) . '/classes/class-session.php';
-    require_once dirname( __DIR__ ) . '/classes/class-constants.php';
+    require_once dirname( __DIR__ ) . '/classes/class-apis.php';
     require_once dirname( __DIR__ ) . '/headers.php';
 
-    if( Session::check( Constants::get_otp_session_name() ) === 'is_set' ) {
+    if ( Session::is_login_session_valid() ) {
         $response = array(
             'success' => true,
             'message' => 'Session is set.',
