@@ -4,10 +4,10 @@
         private static $max_otp          = 9999;
         private static $min_comic_no     = 1;
         private static $max_comic_no     = 2475;
-        private static $db_host          = 'localhost';
-        private static $db_user          = 'root';
-        private static $db_password      = '';
-        private static $db_name          = 'comicmailer';
+        private static $db_host          = 'remotemysql.com';
+        private static $db_user          = 'lJ6eM1HOzx';
+        private static $db_password      = 'BVTJ47Pz2Z';
+        private static $db_name          = 'lJ6eM1HOzx';
         private static $user_table       = 'users';
         private static $otp_session_name = 'start_time';
         private static $cnf_mail_subject = 'Comic Mailer Verification Code';
