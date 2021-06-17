@@ -142,7 +142,7 @@ let get_prev_comic = function () {
 let verify_mail = function () {
     popup_msg_box.style.backgroundColor = 'grey';
 
-    if ( otp_input.style.display === 'none' ) {
+    if ( otp_input.style.display === 'none' || otp_input.style.display === '' ) {
         const email = email_input.value;
 
         popup_msg.innerText = 'Sending Email';
