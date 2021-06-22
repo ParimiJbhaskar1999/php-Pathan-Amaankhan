@@ -1,4 +1,6 @@
 class ApiCalls {
+
+    // Initializing variables.
     constructor() {
         this.url = '';
         this.current_comic_number = 0;
@@ -8,8 +10,9 @@ class ApiCalls {
         };
     }
 
+    // Checks the otp-session( of 5 minutes ) and returns the availability in boolean.
     async check_session() {
-        this.url       = 'apis/check-session.php';
+        this.url       = 'server/apis/check-session.php';
         const response = await fetch( this.url, { headers: this.headers } );
         const res_obj  = await response.json();
 
@@ -22,11 +25,12 @@ class ApiCalls {
         return is_session_available;
     }
 
+    // Fetches a random comic and returns the comic object.
     async get_random_comic( comic_num = 0 ) {
         if ( comic_num > 0 ) {
-            this.url = `apis/get-comic.php?number=${ comic_num }`;
+            this.url = `server/apis/get-comic.php?number=${ comic_num }`;
         } else {
-            this.url = `apis/get-comic.php?number=${ Math.floor( Math.random() * 2475 ) + 1 }`;
+            this.url = `server/apis/get-comic.php?number=${ Math.floor( Math.random() * 2475 ) + 1 }`;
         }
 
         let comic      = {};
@@ -40,8 +44,9 @@ class ApiCalls {
         return comic;
     }
 
+    // Sends mail to user with a 4 digit one time password( OTP ).
     async generate_otp( email ) {
-        this.url = 'apis/send-verification-mail.php';
+        this.url = 'server/apis/send-verification-mail.php';
         let body = new FormData();
         body.append( 'email', email );
 
@@ -60,8 +65,9 @@ class ApiCalls {
         return success;
     }
 
+    // Checks if the otp entered by the user is correct or not.
     async check_otp( email, otp ) {
-        this.url = 'apis/verify-otp.php';
+        this.url = 'server/apis/verify-otp.php';
         let body = new FormData();
         body.append( 'email', email );
         body.append( 'otp', otp );
@@ -89,7 +95,9 @@ const comic_img     = document.getElementById( 'comic-img' );
 const comic_title   = document.getElementById( 'comic-title' );
 const popup_msg     = document.getElementById( 'popup-msg' );
 const popup_msg_box = document.getElementById( 'popup-msg-box' );
+let timeout;
 
+// Checks the otp-session of user and accordingly displays the otp input box accordingly.
 let check_session = function () {
     api_call.check_session().then( is_session_available => {
         if ( is_session_available ) {
@@ -102,8 +110,9 @@ let check_session = function () {
     } );
 }
 
+// Sets a random/chosen comic on the home page.
 let set_comic = function ( comic_number = 0 ) {
-    comic_img.src         = 'assets/images/loading.jpg';
+    comic_img.src         = '/app/assets/images/loading.jpg';
     comic_title.innerText = 'Loading';
 
     api_call.get_random_comic( comic_number ).then( comic => {
@@ -113,12 +122,13 @@ let set_comic = function ( comic_number = 0 ) {
             comic_title.innerText         = comic.title;
         } else {
             api_call.current_comic_number = 0;
-            comic_img.src                 = 'assets/images/error.jpg';
+            comic_img.src                 = '/app/assets/images/error.jpg';
             comic_img.innerText           = 'Cannot Load Comic';
         }
     } );
 }
 
+// Fetches and displays the next comic. i.e. If current comic number is 1 then it will fetch and display comic number 2.
 let get_next_comic = function () {
     if ( api_call.current_comic_number < 2475 ) {
         api_call.current_comic_number++;
@@ -129,6 +139,7 @@ let get_next_comic = function () {
     set_comic( api_call.current_comic_number );
 }
 
+// Fetches and displays the previous comic. i.e. If current comic number is 2 then it will fetch and display comic number 1.
 let get_prev_comic = function () {
     if ( api_call.current_comic_number > 1 ) {
         api_call.current_comic_number--;
@@ -139,54 +150,60 @@ let get_prev_comic = function () {
     set_comic( api_call.current_comic_number );
 }
 
+// Verifies the email address and shows popup according to the result.
 let verify_mail = function () {
     popup_msg_box.style.backgroundColor = 'grey';
+    popup_msg_box.style.display         = 'flex';
+
+    const email = email_input.value;
+
+    if ( email === '' ) {
+        popup_msg.innerText                 = 'Email Required';
+        popup_msg_box.style.backgroundColor = 'red';
+
+        clearTimeout( timeout );
+        timeout = setTimeout( () => popup_msg_box.style.display = 'none', 5000);
+        return;
+    }
 
     if ( otp_input.style.display === 'none' || otp_input.style.display === '' ) {
-        const email = email_input.value;
-
         popup_msg.innerText = 'Sending Email';
-        popup_msg_box.style.display = 'flex';
 
         api_call.generate_otp( email ).then( isSuccessful => {
             if ( isSuccessful ) {
-                popup_msg.innerText = 'Email Send';
+                popup_msg.innerText                 = 'Email Send';
                 popup_msg_box.style.backgroundColor = 'green';
-                popup_msg_box.style.display = 'flex';
             } else {
-                popup_msg.innerText = 'Failed';
+                popup_msg.innerText                 = 'Failed';
                 popup_msg_box.style.backgroundColor = 'red';
-                popup_msg_box.style.display = 'flex';
             }
-            setTimeout( () => popup_msg_box.style.display = 'none', 5000);
-            check_session();
         } );
     } else {
-        const email = email_input.value;
         const otp = otp_input.value;
 
-        popup_msg.innerText = 'Checking OTP';
+        popup_msg.innerText         = 'Checking OTP';
         popup_msg_box.style.display = 'flex';
 
         api_call.check_otp( email, otp ).then( isSuccessful => {
             if ( isSuccessful ) {
-                popup_msg.innerText = 'Success';
+                popup_msg.innerText                 = 'Success';
                 popup_msg_box.style.backgroundColor = 'green';
-                popup_msg_box.style.display = 'flex';
             } else {
-                popup_msg.innerText = 'Failure';
+                popup_msg.innerText                 = 'Failure';
                 popup_msg_box.style.backgroundColor = 'red';
-                popup_msg_box.style.display = 'flex';
             }
-            setTimeout( () => popup_msg_box.style.display = 'none', 5000);
-            check_session();
         } );
     }
+
+    clearTimeout( timeout );
+    timeout = setTimeout( () => popup_msg_box.style.display = 'none', 5000);
+    check_session();
 }
 
+// Closes the popup if its open.
 let close_popup = function () {
     popup_msg_box.style.display = 'none';
 }
 
-check_session();
-set_comic();
+check_session(); // Checking if user has generated otp before and its still valid.
+set_comic(); // Setting a random comic initially.

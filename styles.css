@@ -41,6 +41,13 @@ button {
     border: 1px solid #96A8C8;
     border-radius: 1em;
     cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+}
+
+button:hover {
+    background-color: white;
+    color: #96A8C8;
+    border: 1px solid #96A8C8;
 }
 
 .only-on-large-screens {
@@ -58,12 +65,6 @@ button {
 
 #otp {
     display: none;
-}
-
-button:hover {
-    background-color: white;
-    color: #96A8C8;
-    border: 1px solid #96A8C8;
 }
 
 input {

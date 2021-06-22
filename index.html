@@ -1,71 +1,72 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-    <title> Comic Mailer </title>
+      <title> Comic Mailer </title>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
-  </head>
+      <link rel="preconnect" href="https://fonts.gstatic.com" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" />
+      <link rel="stylesheet" type="text/css" href="styles.css" />
+    </head>
 
-  <body class="grid">
-    <div id="popup-msg-box">
-      <span id="popup-msg"> </span>
-      <img src="assets/icons/close-white.png" alt="close" onclick="close_popup()" />
-    </div>
-    <h2 class="container a"> COMIC MAILER </h2>
-
-    <div class="c">
-      <div class="container">
-        <h3 id="comic-title"> Loading </h3>
-      </div>
-
-      <div class="container">
-        <button class="only-on-large-screens" onclick="set_comic()"> Random </button>
-
-        <div class="only-on-small-screens">
-          <button onclick="get_prev_comic()"> Prev </button>
-          <button onclick="get_next_comic()"> Next </button>
+    <body class="grid">
+        <div id="popup-msg-box">
+          <span id="popup-msg"> </span>
+          <img src="app/assets/icons/close-white.png" alt="close" onclick="close_popup()" />
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center">
-          <img class="navigation-img only-on-large-screens"
-               src="assets/icons/left-arrow.png"
-               alt="left"
-               onclick="get_prev_comic()" />
+        <h2 class="container a"> COMIC MAILER </h2>
 
-          <img id="comic-img" src="assets/images/loading.jpg" />
+        <div class="c">
+          <div class="container">
+            <h3 id="comic-title"> Loading </h3>
+          </div>
 
-          <img class="navigation-img only-on-large-screens"
-               src="assets/icons/right-arrow.png"
-               alt="right"
-               onclick="get_next_comic()" />
+          <div class="container">
+            <button class="only-on-large-screens" onclick="set_comic()"> Random </button>
+
+            <div class="only-on-small-screens">
+              <button onclick="get_prev_comic()"> Prev </button>
+              <button onclick="get_next_comic()"> Next </button>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <img class="navigation-img only-on-large-screens"
+                   src="app/assets/icons/left-arrow.png"
+                   alt="left"
+                   onclick="get_prev_comic()" />
+
+              <img id="comic-img" src="app/assets/images/loading.jpg" />
+
+              <img class="navigation-img only-on-large-screens"
+                   src="app/assets/icons/right-arrow.png"
+                   alt="right"
+                   onclick="get_next_comic()" />
+            </div>
+
+            <button onclick="set_comic()"> Random </button>
+          </div>
         </div>
 
-        <button onclick="set_comic()"> Random </button>
-      </div>
-    </div>
+        <div class="container b">
+          <h3> Subscribe to service </h3>
 
-    <div class="container b">
-      <h3> Subscribe to service </h3>
+          <input type="email" id="email" placeholder="Enter Email ID" required />
 
-      <input type="email" id="email" placeholder="Enter Email ID" required="required" />
+          <input type="number" id="otp" placeholder="Enter OTP" />
 
-      <input type="number" id="otp" placeholder="Enter OTP" />
+          <button onclick="verify_mail()"> Verify </button>
 
-      <button onclick="verify_mail()"> Verify </button>
-      <p>
-        This service sends the comic as mail in every 5 minutes.
-        To subscribe the service please verify your email above.
-      </p>
-    </div>
+          <p>
+            This service sends the comic as mail in every 5 minutes.
+            To subscribe the service please verify your email above.
+          </p>
+        </div>
+    </body>
 
-  </body>
-
-  <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="main.js"></script>
 </html>

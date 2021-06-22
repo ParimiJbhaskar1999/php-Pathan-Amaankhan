@@ -2,6 +2,17 @@
     require_once dirname( __DIR__ ) . '/classes/class-user.php';
     require_once dirname( __DIR__ ) . '/headers.php';
 
+    /*
+     * send-verification-mail api sends the verification mail to the mail provided in the request body.
+     *
+     * Returns -> ( Json Object )
+     *
+     * Method Type:
+     * POST
+     *
+     * Parameters
+     * email: string
+     */
     if ( isset( $_POST['email']  ) ) {
         $email       = $_POST['email'];
         $user        = new User();

@@ -7,16 +7,37 @@
 
     class User {
         private $db_connection;
+        private $mailer;
         private $table;
         private $session_name;
 
+        /*
+         * The constructor of User class
+         * - Creates a new database connection
+         * - Gets the name of user table and stores it into $table variable
+         * - Gets the session name and stores it into $session_name variable
+         *
+         * Returns -> ( none )
+         *
+         * Parameters
+         * none
+         */
         public function  __construct( ) {
             $db                  = new Database();
             $this->db_connection = $db->get_connection();
+            $this->mailer        = new Mailer();
             $this->table         = Constants::get_user_table();
             $this->session_name  = Constants::get_otp_session_name();
         }
 
+        /*
+         * is_registered check if the user is already registered or not.
+         *
+         * Returns -> ( boolean )
+         *
+         * Parameters
+         * $email: string
+         */
         private function is_registered( $email ) {
             $query = "SELECT * FROM {$this->table} WHERE email='$email'";
             $user  = $this->db_connection->query( $query );
@@ -28,6 +49,15 @@
             }
         }
 
+        /*
+         * create_user creates a new user or updates existing user.
+         *
+         * Returns -> ( string )
+         *
+         * Parameters
+         * $email: string
+         * $otp  : integer
+         */
         private function create_user( $email, $otp ) {
             if ( $this->is_registered( $email ) ) {
                 $query = "UPDATE {$this->table} SET last_otp = $otp, time = CURRENT_TIMESTAMP WHERE email='$email'";
@@ -44,6 +74,14 @@
             }
         }
 
+        /*
+         * is_otp_valid checks if the otp entered by the user is valid or not.
+         *
+         * Returns -> ( boolean )
+         *
+         * Parameters
+         * none
+         */
         public function is_otp_valid() {
             if ( Session::check( $this->session_name ) === 'is_set' && isset( $_SERVER['REQUEST_TIME'] ) ) {
                 $timestamp         = $_SERVER['REQUEST_TIME'];
@@ -59,10 +97,18 @@
             return false;
         }
 
+        /*
+         * send_verification_email send a verification email to the email address sent in the parameter.
+         *
+         * Returns -> ( string )
+         *
+         * Parameters
+         * $receiver: string
+         */
         public function send_verification_email( $receiver ) {
             $otp     = mt_rand( Constants::get_min_otp(), Constants::get_max_otp() );
 
-            $mail_send = Mailer::send_confirmation_mail( $receiver, $otp );
+            $mail_send = $this->mailer->send_confirmation_mail( $receiver, $otp );
             $creation  = $this->create_user( $receiver, $otp );
 
             if ( $mail_send === 'success' && $creation === 'success' && isset( $_SERVER['REQUEST_TIME'] ) ) {
@@ -73,6 +119,15 @@
             }
         }
 
+        /*
+         * verify_otp verifies the otp entered by the user.
+         *
+         * Returns -> ( string )
+         *
+         * Parameters
+         * $email: string
+         * $otp  : integer
+         */
         public function verify_otp( $email, $otp ) {
             if ( $this->is_otp_valid() ) {
                 $query    = "SELECT last_otp from {$this->table} where email='$email'";
@@ -95,6 +150,14 @@
             return 'failure';
         }
 
+        /*
+         * unsubscribe unsubscribes the mailing service if mailing service is availed by the user.
+         *
+         * Returns -> ( string )
+         *
+         * Parameters
+         * $email: string
+         */
         public function unsubscribe( $email ) {
             $query      = "UPDATE {$this->table} SET subscribed = 0 WHERE email='$email'";
             $is_updated = $this->db_connection->query( $query );

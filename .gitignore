@@ -1,2 +1,8 @@
 # IDEs and editors
 /.idea
+
+# hosted files
+/composer.json
+
+# secrets
+/server/classes/class-secrets.php
