@@ -51,15 +51,15 @@
 
 <a id="web-view"></a>
 - ##### Web View
-|                                  [Home Page](https://comicmailer.herokuapp.com)                                        |                                   [Unsubscribe Page](https://comicmailer.herokuapp.com/app/unsubscribe)                               |
-| :--------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------: |
-|    ![Comic Mailer 'Home Page' (Web View)](https://comicmailer.herokuapp.com/app/assets/images/mainpage_webview.png)    |    ![Comic Mailer 'Unsubscribe Page' (Web View)](https://comicmailer.herokuapp.com/app/assets/images/unsubscribepage_webview.png)     |
+|                  [Home Page](https://comicmailer.herokuapp.com)                        |                   [Unsubscribe Page](https://comicmailer.herokuapp.com/app/unsubscribe)               |
+| :------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: |
+|    ![Comic Mailer 'Home Page' (Web View)](./app/assets/images/mainpage_webview.png)    |    ![Comic Mailer 'Unsubscribe Page' (Web View)](./app/assets/images/unsubscribepage_webview.png)     |
 
 <a id="mobile-view"></a>
 - ##### Mobile View
-|                                  [Home Page](https://comicmailer.herokuapp.com)                                        |                                   [Unsubscribe Page](https://comicmailer.herokuapp.com/app/unsubscribe)                               |
-| :--------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------: |
-| ![Comic Mailer 'Home Page' (Mobile View)](https://comicmailer.herokuapp.com/app/assets/images/mainpage_mobileview.png) | ![Comic Mailer 'Unsubscribe Page' (Mobile View)](https://comicmailer.herokuapp.com/app/assets/images/unsubscribepage_mobileview.png)  |
+|                  [Home Page](https://comicmailer.herokuapp.com)                        |                   [Unsubscribe Page](https://comicmailer.herokuapp.com/app/unsubscribe)               |
+| :------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: |
+| ![Comic Mailer 'Home Page' (Mobile View)](./app/assets/images/mainpage_mobileview.png) | ![Comic Mailer 'Unsubscribe Page' (Mobile View)](./app/assets/images/unsubscribepage_mobileview.png)  |
 
 
 <a id="technologies-used"></a>
@@ -97,7 +97,7 @@ CREATE TABLE users (
 
 <a id="flow-diagram"></a>
 ### Flow Diagram
-![Comic Mailer (Flow Diagram)](https://comicmailer.herokuapp.com/app/assets/images/flow_diagram.png)
+![Comic Mailer (Flow Diagram)](./app/assets/images/flow_diagram.png)
 
 <a id="how-to-run"></a>
 ### How To Run??
