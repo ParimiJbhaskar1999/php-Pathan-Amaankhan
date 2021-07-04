@@ -68,11 +68,11 @@
         }
 
         /**
-         * is_otp_valid checks if the otp entered by the user is valid or not.
+         * is_otp_session_valid checks if the otp session is valid or not.
          *
          * @return bool true on success or false on failure.
          */
-        public function is_otp_valid() {
+        public function is_otp_session_valid() {
             if ( Session::check( $this->session_name ) === 'is_set' && isset( $_SERVER['REQUEST_TIME'] ) ) {
                 $timestamp         = $_SERVER['REQUEST_TIME'];
                 $session_timestamp = Session::get_value( $this->session_name );
@@ -115,7 +115,7 @@
          * @return string success string on success or failure string on failure.
          */
         public function verify_otp( $email, $otp ) {
-            if ( $this->is_otp_valid() ) {
+            if ( $this->is_otp_session_valid() ) {
                 $query    = "SELECT last_otp from {$this->table} where email='$email'";
                 $rows     = $this->db_connection->query( $query );
                 $send_otp = $rows->fetch_row()[0];

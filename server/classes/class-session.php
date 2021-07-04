@@ -65,7 +65,7 @@
          */
         public static function is_login_session_valid() {
             $user = new User;
-            if ( $user->is_otp_valid() ) {
+            if ( $user->is_otp_session_valid() ) {
                 return true;
             } else {
                 return false;
