@@ -121,7 +121,7 @@
                 $send_otp = $rows->fetch_row()[0];
 
                 if ( $rows->num_rows > 0 && $send_otp === $otp ) {
-                    $query = "UPDATE "
+                    $query = 'UPDATE '
                         . $this->table .
                         " SET subscribed = 1, time = CURRENT_TIMESTAMP WHERE email='$email'";
                     $is_updated =  $this->db_connection->query( $query );

@@ -9,7 +9,7 @@
         public static function otp_mail_template( $otp ) {
             $message = Constants::get_otp_mail_body( $otp );
 
-            $template  = "<h1 style='text-align: center'>Comic Mailer</h1>";
+            $template  = '<h1 style=\'text-align: center\'>Comic Mailer</h1>';
             $template .= "<p style='text-align: center'>$message</p>";
 
             return $template;
@@ -27,25 +27,25 @@
             $url = Constants::get_web_link();
             $unsubscribe_link = "$url/app/unsubscribe";
 
-            $template  = "<table style='width: 100%; border-collapse: separate; border-spacing: 0 1em;'>";
+            $template  = '<table style=\'width: 100%; border-collapse: separate; border-spacing: 0 1em;\'>';
             $template .= "<tr><th><h1>$heading</h1></th></tr>";
             $template .= "<tr><td style='text-align: center;'><img src='$img_link' alt='$img_link'></td></tr>";
             $template .= "<tr><td style='text-align: center;'><a href='https://xkcd.com/$comic_number/'>";
-            $template .= "<button ";
-            $template .= "style='border-width: 0; ";
-            $template .= "border-radius: 10px; ";
-            $template .= "color: white; ";
-            $template .= "background-color: deeppink; ";
-            $template .= "padding: 1em; ";
-            $template .= "box-shadow: 1px 1px 5px black; ";
-            $template .= "font-size: 1em;'>";
-            $template .= "Open In Browser";
-            $template .= "</button>";
-            $template .= "</a></td></tr>";
-            $template .= "<tr><td style='text-align: center;'>";
+            $template .= '<button ';
+            $template .= 'style=\'border-width: 0; ';
+            $template .= 'border-radius: 10px; ';
+            $template .= 'color: white; ';
+            $template .= 'background-color: deeppink; ';
+            $template .= 'padding: 1em; ';
+            $template .= 'box-shadow: 1px 1px 5px black; ';
+            $template .= 'font-size: 1em;\'>';
+            $template .= 'Open In Browser';
+            $template .= '</button>';
+            $template .= '</a></td></tr>';
+            $template .= '<tr><td style=\'text-align: center;\'>';
             $template .= "<a style='font-size: 1em;' href='$unsubscribe_link'>Unsubscribe here</a>";
-            $template .= "</td></tr>";
-            $template .= "</table>";
+            $template .= '</td></tr>';
+            $template .= '</table>';
 
             return $template;
         }
