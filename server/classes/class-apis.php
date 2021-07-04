@@ -2,13 +2,11 @@
     require_once __DIR__ . '/class-templates.php';
 
     class Apis {
-        /*
+        /**
          * get_comic function fetches the comic info from xkcd.com.
          *
-         * Returns -> ( Comic Object )
-         *
-         * Parameters
-         * $comic_number: integer
+         * @param int $comic_number comic book's number, which is to be fetched.
+         * @return mixed|string a json decoded object containing comic information on success or an error string on failure.
          */
         public function get_comic( $comic_number ) {
             $curl = curl_init();
@@ -25,18 +23,15 @@
             }
         }
 
-        /*
+        /**
          * send_mail function sends email using sendgrid api.
          *
-         * Returns -> ( string / Error Object )
-         *
-         * Parameters
-         * $to          : array( string )
-         * $subject     : string
-         * $body        : string
-         * $body        : string
-         * $is_scheduled: boolean
-         * $img_link    : string
+         * @param array          $to           a string type array containing emails on which mail is to be send.
+         * @param string         $subject      subject of the mail.
+         * @param string         $body         body of the mail.
+         * @param bool|null      $is_scheduled optional. when true sends the mail after 5 minutes. false.
+         * @param string|null    $img_link     optional. when set image is attached to the mail. null.
+         * @return string a success string on success or an error string on failure.
          */
         public function send_mail( $to, $subject, $body, $is_scheduled = false, $img_link = null ) {
             $curl = curl_init();

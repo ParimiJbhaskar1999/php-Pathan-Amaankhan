@@ -2,16 +2,13 @@
     require_once dirname( __DIR__ ) . '/classes/class-session.php';
     require_once dirname( __DIR__ ) . '/headers.php';
 
-    /*
+    /**
      * check-session api checks if the user's otp session is valid or not.
-     *
-     * Returns -> ( Json Object )
      *
      * Method Type:
      * GET
      *
-     * Parameters
-     * none
+     * @return string|false a JSON encoded string on success or FALSE on failure.
      */
     if ( Session::is_login_session_valid() ) {
         $response = array(

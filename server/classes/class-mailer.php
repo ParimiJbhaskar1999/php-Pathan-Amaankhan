@@ -7,16 +7,13 @@
         private $table;
         private $db_connection;
 
-        /*
+        /**
          * The constructor of Mailer class
          * - Creates a new connection to database using the instance of Database class stores in $db variable.
          * - Creates the instance of Apis class and stores it into $api variable.
          * - Gets the name of users table and stores it into $table variable.
          *
-         * Returns -> ( none )
-         *
-         * Parameters
-         * none
+         * @return void
          */
         public function __construct() {
             $db                  = new Database();
@@ -25,14 +22,12 @@
             $this->table         = Constants::get_user_table();
         }
 
-        /*
+        /**
          * send_confirmation_mail sends the otp to the user provided in the parameters.
          *
-         * Returns -> ( string )
-         *
-         * Parameters
-         * $to : string
-         * $otp: integer
+         * @param string $to  set the receiver's mail address.
+         * @param int    $otp set the otp for the otp in mail body.
+         * @return string success string on success or failure string on failure.
          */
         public function send_confirmation_mail( $to, $otp ) {
             $subject = Constants::get_otp_mail_subject();
@@ -47,14 +42,12 @@
             }
         }
 
-        /*
+        /**
          * send_mails sends the mail containing comic in it after 5 minutes or at the same time
          * as per the information provided in the parameter.
          *
-         * Returns -> ( none )
-         *
-         * Parameters
-         * $is_scheduled: boolean
+         * @param bool|null $is_scheduled optional. when true mail is send after 5 minutes. false.
+         * @return void
          */
         public function send_mails( $is_scheduled = false ) {
             $query = "SELECT email FROM {$this->table} WHERE subscribed=1";

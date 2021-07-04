@@ -2,17 +2,15 @@
     require_once dirname( __DIR__ ) . '/classes/class-user.php';
     require_once dirname( __DIR__ ) . '/headers.php';
 
-    /*
+    /**
      * verify-otp api verifies the otp entered by the user.
-     *
-     * Returns -> ( Json Object )
      *
      * Method Type:
      * POST
      *
-     * Parameters
-     * email: string
-     * otp  : integer
+     * @param string $_POST['email'] set the user's email.
+     * @param int    $_POST['otp']   set the user entered otp.
+     * @return string|false a JSON encoded string on success or FALSE on failure.
      */
     if ( isset( $_POST['email']  ) && isset( $_POST['otp'] ) ) {
         $email       = $_POST['email'];

@@ -11,16 +11,13 @@
         private $table;
         private $session_name;
 
-        /*
+        /**
          * The constructor of User class
          * - Creates a new database connection
          * - Gets the name of user table and stores it into $table variable
          * - Gets the session name and stores it into $session_name variable
          *
-         * Returns -> ( none )
-         *
-         * Parameters
-         * none
+         * @return void
          */
         public function  __construct( ) {
             $db                  = new Database();
@@ -30,13 +27,11 @@
             $this->session_name  = Constants::get_otp_session_name();
         }
 
-        /*
+        /**
          * is_registered check if the user is already registered or not.
          *
-         * Returns -> ( boolean )
-         *
-         * Parameters
-         * $email: string
+         * @param string $email email address of the user.
+         * @return bool true on success or false on failure.
          */
         private function is_registered( $email ) {
             $query = "SELECT * FROM {$this->table} WHERE email='$email'";
@@ -49,14 +44,12 @@
             }
         }
 
-        /*
+        /**
          * create_user creates a new user or updates existing user.
          *
-         * Returns -> ( string )
-         *
-         * Parameters
-         * $email: string
-         * $otp  : integer
+         * @param string $email email address of the user.
+         * @param int    $otp   otp send to the user.
+         * @return string success string on success or failure string on failure.
          */
         private function create_user( $email, $otp ) {
             if ( $this->is_registered( $email ) ) {
@@ -74,13 +67,10 @@
             }
         }
 
-        /*
+        /**
          * is_otp_valid checks if the otp entered by the user is valid or not.
          *
-         * Returns -> ( boolean )
-         *
-         * Parameters
-         * none
+         * @return bool true on success or false on failure.
          */
         public function is_otp_valid() {
             if ( Session::check( $this->session_name ) === 'is_set' && isset( $_SERVER['REQUEST_TIME'] ) ) {
@@ -97,13 +87,11 @@
             return false;
         }
 
-        /*
+        /**
          * send_verification_email send a verification email to the email address sent in the parameter.
          *
-         * Returns -> ( string )
-         *
-         * Parameters
-         * $receiver: string
+         * @param string $receiver user's email address.
+         * @return string success string on success or failure string on failure.
          */
         public function send_verification_email( $receiver ) {
             $otp     = mt_rand( Constants::get_min_otp(), Constants::get_max_otp() );
@@ -119,14 +107,12 @@
             }
         }
 
-        /*
+        /**
          * verify_otp verifies the otp entered by the user.
          *
-         * Returns -> ( string )
-         *
-         * Parameters
-         * $email: string
-         * $otp  : integer
+         * @param string $email user's email address.
+         * @param int    $otp   otp entered by the user.
+         * @return string success string on success or failure string on failure.
          */
         public function verify_otp( $email, $otp ) {
             if ( $this->is_otp_valid() ) {
@@ -150,13 +136,11 @@
             return 'failure';
         }
 
-        /*
+        /**
          * unsubscribe unsubscribes the mailing service if mailing service is availed by the user.
          *
-         * Returns -> ( string )
-         *
-         * Parameters
-         * $email: string
+         * @param  string $email user's email address.
+         * @return string success string on success or failure string on failure.
          */
         public function unsubscribe( $email ) {
             $query      = "UPDATE {$this->table} SET subscribed = 0 WHERE email='$email'";

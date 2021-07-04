@@ -1,12 +1,10 @@
 <?php
     class Templates {
-        /*
+        /**
          * otp_mail_template gives the email's html template containing otp in it.
          *
-         * Returns -> ( string )
-         *
-         * Parameters
-         * $otp: integer
+         * @param int $otp otp which is to be set inside the template.
+         * @return string template of mail containing otp.
          */
         public static function otp_mail_template( $otp ) {
             $message = Constants::get_otp_mail_body( $otp );
@@ -17,15 +15,13 @@
             return $template;
         }
 
-        /*
+        /**
          * mail_template gives the email's html template containing comic and unsubscription link in it.
          *
-         * Returns -> ( string )
-         *
-         * Parameters
-         * $comic_number: integer
-         * $heading     : string
-         * $img_link    : string
+         * @param int    $comic_number comic book's number.
+         * @param string $heading      heading of the mail(comic's name).
+         * @param string $img_link     link of the comic's image.
+         * @return string template of mail containing comic.
          */
         public static function mail_template( $comic_number, $heading, $img_link ) {
             $url = Constants::get_web_link();
@@ -54,17 +50,15 @@
             return $template;
         }
 
-        /*
+        /**
          * api_template gives the mail api template attaching users and other parameters in it.
          *
-         * Returns -> ( string )
-         *
-         * Parameters
-         * $to          : array( string )
-         * $subject     : string
-         * $body        : string
-         * $is_scheduled: boolean
-         * $ims_link    : string
+         * @param array          $to           a string type array containing emails on which mail is to be send.
+         * @param string         $subject      subject of the mail.
+         * @param string         $body         body of the mail.
+         * @param bool|null      $is_scheduled optional. when true sends the mail after 5 minutes. false.
+         * @param string|null    $img_link     optional. when set image is attached to the mail. null.
+         * @return string template of mail sending api.
          */
         public static function api_template( $to, $subject, $body, $is_scheduled = false, $img_link = null ) {
             $sender = Constants::get_sender_mail();

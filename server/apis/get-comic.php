@@ -2,16 +2,14 @@
     require_once dirname( __DIR__ ) . '/classes/class-user.php';
     require_once dirname( __DIR__ ) . '/headers.php';
 
-    /*
+    /**
      * get-comic api fetches the data of a particular comic number and returns it.
-     *
-     * Returns -> ( Json Object )
      *
      * Method Type:
      * GET
      *
-     * Parameters
-     * number: integer
+     * @param int $_GET['number'] set the comic book's number.
+     * @return string|false a JSON encoded string on success or FALSE on failure.
      */
     if ( isset( $_GET['number']  ) ) {
         $comic_number = $_GET['number'];
