@@ -80,7 +80,8 @@
 |   email    | varchar(50) |  NO   |  PRI  |                   |                   |
 |    time    |  timestamp  |  NO   |       | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
 |  last_otp  |    int(4)   |  NO   |       |                   |                   |
-| subscribed |    int(1)   |  NO   |       |         0         |                   |
+| subscribed |    int(1)   |  NO   |       |        0          |                   |
+|   token    | varchar(50) |  YES  |       |                   |                   |
 
 <a id="mysql"></a>
 - ##### MySql
@@ -90,6 +91,7 @@ CREATE TABLE users (
   time timestamp NOT NULL DEFAULT current_timestamp(),
   last_otp int(4) NOT NULL,
   subscribed int(1) NOT NULL DEFAULT 0,
+  token varchar(50),
   PRIMARY KEY (email)
 );
 ```
@@ -111,6 +113,7 @@ CREATE TABLE users (
     - *[XAMPP](https://www.apachefriends.org/index.html)*
     - *[Text Editor](https://www.sublimetext.com/) / [IDE](https://www.jetbrains.com/help/phpstorm/installation-guide.html#standalone)*
     - *[SendGrid Account](https://sendgrid.com/)*
+  
 
   <a id="windows-steps"></a>
   - ###### Steps

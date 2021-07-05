@@ -203,6 +203,7 @@ let verify_mail = () => {
     set_new_timeout();
 }
 
+// Start a new count-down time for showing the popup message box.
 let set_new_timeout = () => {
     clearTimeout( timeout );
     timeout = setTimeout( () => popup_msg_box.style.display = 'none', timeout_time);

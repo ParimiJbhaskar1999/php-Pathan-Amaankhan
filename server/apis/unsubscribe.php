@@ -7,14 +7,14 @@
      * Method Type:
      * POST
      *
-     * @param string $_POST['email'] set the user's email.
+     * @param string $_POST['token'] user's token.
      * @return string|false a JSON encoded string on success or FALSE on failure.
      */
-    if ( isset( $_POST['email'] ) && filter_input( INPUT_POST, 'email', FILTER_VALIDATE_EMAIL ) ) {
-        $email = (string) $_POST['email'];
+    if ( isset( $_POST['token'] ) ) {
+        $token = (string) $_POST['token'];
         $user  = new User();
 
-        if ( $user->unsubscribe( $email ) === 'success' ) {
+        if ( $user->unsubscribe( $token ) === 'success' ) {
             $response = array(
                 'success' => true,
                 'message' => 'Service unsubscribed successfully.',
@@ -28,7 +28,7 @@
     } else {
         $response = array(
             'success' => false,
-            'message' => 'Wrong Input.',
+            'message' => 'Missing required parameters.',
         );
     }
 

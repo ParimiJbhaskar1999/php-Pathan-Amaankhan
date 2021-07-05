@@ -3,6 +3,34 @@ body {
     font-family: 'Nunito', sans-serif;
 }
 
+input {
+    display: block;
+    margin: 1em auto;
+    padding: 1em;
+    width: 80%;
+    text-align: center;
+    border-radius: 1em;
+    outline: none;
+    font-family: 'Nunito', sans-serif;
+}
+
+button {
+    margin: 1em auto;
+    padding: 0.5em 2em;
+    background-color: #96A8C8;
+    color: white;
+    border: 1px solid #96A8C8;
+    border-radius: 1em;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+}
+
+button:hover {
+    background-color: white;
+    color: #96A8C8;
+    border: 1px solid #96A8C8;
+}
+
 #popup-msg-box {
     position: fixed;
     top: 1%;
@@ -25,29 +53,20 @@ body {
     cursor: pointer;
 }
 
+#comic-img {
+    width: 100%;
+}
+
+#otp {
+    display: none;
+}
+
 .container {
     margin: 0.5em;
     padding: 0.5em;
     background-color: white;
     border-radius: 1em;
     text-align: center;
-}
-
-button {
-    margin: 1em auto;
-    padding: 0.5em 2em;
-    background-color: #96A8C8;
-    color: white;
-    border: 1px solid #96A8C8;
-    border-radius: 1em;
-    cursor: pointer;
-    font-family: 'Nunito', sans-serif;
-}
-
-button:hover {
-    background-color: white;
-    color: #96A8C8;
-    border: 1px solid #96A8C8;
 }
 
 .only-on-large-screens {
@@ -57,25 +76,6 @@ button:hover {
 .only-on-small-screens {
     display: flex;
     justify-content: space-between;
-}
-
-#comic-img {
-    width: 100%;
-}
-
-#otp {
-    display: none;
-}
-
-input {
-    display: block;
-    margin: 1em auto;
-    padding: 1em;
-    width: 80%;
-    text-align: center;
-    border-radius: 1em;
-    outline: none;
-    font-family: 'Nunito', sans-serif;
 }
 
 @media only screen and (min-width: 875px) {

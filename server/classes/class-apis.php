@@ -26,14 +26,14 @@
         /**
          * send_mail function sends email using sendgrid api.
          *
-         * @param array          $to           a string type array containing emails on which mail is to be send.
+         * @param string         $receiver     email on which mail is to be send.
          * @param string         $subject      subject of the mail.
          * @param string         $body         body of the mail.
          * @param bool|null      $is_scheduled optional. when true sends the mail after 5 minutes. false.
          * @param string|null    $img_link     optional. when set image is attached to the mail. null.
          * @return string a success string on success or an error string on failure.
          */
-        public function send_mail( $to, $subject, $body, $is_scheduled = false, $img_link = null ) {
+        public function send_mail( $receiver, $subject, $body, $is_scheduled = false, $img_link = null ) {
             $curl = curl_init();
             $url = 'https://api.sendgrid.com/v3/mail/send';
             $key = Constants::get_mail_secret();
@@ -42,7 +42,7 @@
             curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
             curl_setopt( $curl, CURLOPT_POST, 1 );
 
-            $api_body = Templates::api_template( $to, $subject, $body, $is_scheduled, $img_link );
+            $api_body = Templates::api_template( $receiver, $subject, $body, $is_scheduled, $img_link );
 
             curl_setopt( $curl, CURLOPT_POSTFIELDS, $api_body );
 

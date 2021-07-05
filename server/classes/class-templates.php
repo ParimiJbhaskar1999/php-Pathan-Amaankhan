@@ -21,11 +21,12 @@
          * @param int    $comic_number comic book's number.
          * @param string $heading      heading of the mail(comic's name).
          * @param string $img_link     link of the comic's image.
+         * @param string $token        unique token assign to each user which is used for unsubscribe
          * @return string template of mail containing comic.
          */
-        public static function mail_template( $comic_number, $heading, $img_link ) {
+        public static function mail_template( $comic_number, $heading, $img_link, $token ) {
             $url = Constants::get_web_link();
-            $unsubscribe_link = "$url/app/unsubscribe";
+            $unsubscribe_link = "$url/app/unsubscribe?token=$token";
 
             $template  = '<table style=\'width: 100%; border-collapse: separate; border-spacing: 0 1em;\'>';
             $template .= "<tr><th><h1>$heading</h1></th></tr>";
@@ -53,28 +54,26 @@
         /**
          * api_template gives the mail api template attaching users and other parameters in it.
          *
-         * @param array          $to           a string type array containing emails on which mail is to be send.
+         * @param string         $receiver     email on which mail is to be send.
          * @param string         $subject      subject of the mail.
          * @param string         $body         body of the mail.
          * @param bool|null      $is_scheduled optional. when true sends the mail after 5 minutes. false.
          * @param string|null    $img_link     optional. when set image is attached to the mail. null.
          * @return string template of mail sending api.
          */
-        public static function api_template( $to, $subject, $body, $is_scheduled = false, $img_link = null ) {
+        public static function api_template( $receiver, $subject, $body, $is_scheduled = false, $img_link = null ) {
             $sender = Constants::get_sender_mail();
 
             $template  = '{"personalizations": [';
 
-            foreach ( $to as $user ) {
-                $template .= '{"to": [{"email": "';
-                $template .= $user;
-                $template .= '"}]';
-                if ( $is_scheduled ) {
-                    $template .= ',"send_at": ';
-                    $template .= strtotime( '+5 minutes' );
-                }
-                $template .= '},';
+            $template .= '{"to": [{"email": "';
+            $template .= $receiver;
+            $template .= '"}]';
+            if ( $is_scheduled ) {
+                $template .= ',"send_at": ';
+                $template .= strtotime( '+5 minutes' );
             }
+            $template .= '},';
 
             $template  = rtrim( $template, ',' );
             $template .= '],';

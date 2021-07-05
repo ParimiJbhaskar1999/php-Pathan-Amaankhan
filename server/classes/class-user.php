@@ -134,10 +134,13 @@
                 if ( $rows->num_rows > 0 && $send_otp === $otp ) {
                     $query = 'UPDATE '
                         . $this->table .
-                        ' SET subscribed = 1, time = CURRENT_TIMESTAMP WHERE email = ?';
-                    $stmt  = $this->db_connection->prepare( $query );
+                        ' SET subscribed = 1, time = CURRENT_TIMESTAMP, token = "' .
+                        uniqid( $email ) .
+                        '" WHERE email = ?';
 
+                    $stmt  = $this->db_connection->prepare( $query );
                     $stmt->bind_param( 's', $email );
+
                     $is_updated = $stmt->execute();
 
                     if ( $is_updated ) {
@@ -153,30 +156,32 @@
         /**
          * unsubscribe unsubscribes the mailing service if mailing service is availed by the user.
          *
-         * @param  string $email user's email address.
+         * @param  string $token user's token.
          * @return string success string on success or failure string on failure.
          */
-        public function unsubscribe( $email ) {
-            $query = "UPDATE {$this->table} SET subscribed = 0 WHERE email = ?";
+        public function unsubscribe( $token ) {
+            $query = "SELECT last_otp from {$this->table} where subscribed = 1 AND token = ?";
             $stmt  = $this->db_connection->prepare( $query );
 
-            $stmt->bind_param( 's', $email );
-            $is_updated = $stmt->execute();
-
-            $query = "SELECT last_otp from {$this->table} where email = ?";
-            $stmt  = $this->db_connection->prepare( $query );
-
-            $stmt->bind_param( 's', $email );
+            $stmt->bind_param( 's', $token );
             $stmt->execute();
             $rows  = $stmt->get_result();
 
             $is_user_valid = $rows->num_rows > 0;
 
-            if ( $is_updated && $is_user_valid ) {
-                return 'success';
-            } else {
-                return 'failure';
+            if ( $is_user_valid ) {
+                $query = "UPDATE {$this->table} SET subscribed = 0, token = NULL WHERE token = ?";
+                $stmt  = $this->db_connection->prepare( $query );
+
+                $stmt->bind_param( 's', $token );
+                $is_updated = $stmt->execute();
+
+                if ( $is_updated ) {
+                    return 'success';
+                }
             }
+
+            return 'failure';
         }
     }
 ?>

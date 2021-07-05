@@ -33,7 +33,7 @@
             $subject = Constants::get_otp_mail_subject();
             $message = Templates::otp_mail_template( $otp );
 
-            $response = $this->api->send_mail( array( $to ), $subject, $message );
+            $response = $this->api->send_mail( $to, $subject, $message );
 
             if ( $response === 'success' ) {
                 return 'success';
@@ -50,20 +50,23 @@
          * @return void
          */
         public function send_mails( $is_scheduled = false ) {
-            $query = "SELECT email FROM {$this->table} WHERE subscribed = 1";
+            $query = "SELECT email, token FROM {$this->table} WHERE subscribed = 1 AND token IS NOT NULL";
             $rows  = $this->db_connection->query( $query );
 
             if ( $rows->num_rows > 0 ) {
-
-                $users = call_user_func_array('array_merge', $rows->fetch_all() );
-
                 $comic_number = mt_rand( Constants::get_min_comic_no(), Constants::get_max_comic_no() );
+                $comic        = $this->api->get_comic( $comic_number );
 
-                $comic      = $this->api->get_comic( $comic_number );
-                $subject    = "Comic Number $comic_number";
-                $message    = Templates::mail_template( $comic_number, $comic->title, $comic->img );
+                if ( isset( $comic->title ) ) {
+                    $subject = "Comic Number $comic_number";
+                    $user    = $rows->fetch_assoc();
 
-                $this->api->send_mail( $users, $subject, $message, $is_scheduled, $comic->img );
+                    while ( $user ) {
+                        $message    = Templates::mail_template( $comic_number, $comic->title, $comic->img, $user['token'] );
+                        $this->api->send_mail( $user['email'], $subject, $message, $is_scheduled, $comic->img );
+                        $user = $rows->fetch_assoc();
+                    }
+                }
             }
         }
     }
