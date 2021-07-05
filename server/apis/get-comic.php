@@ -1,5 +1,5 @@
 <?php
-    require_once dirname( __DIR__ ) . '/classes/class-user.php';
+    require_once dirname( __DIR__ ) . '/classes/class-apis.php';
     require_once dirname( __DIR__ ) . '/headers.php';
 
     /**

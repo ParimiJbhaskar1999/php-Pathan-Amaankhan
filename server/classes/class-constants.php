@@ -4,8 +4,6 @@
     class Constants {
         private static $min_otp          = 1111;
         private static $max_otp          = 9999;
-        private static $min_comic_no     = 1;
-        private static $max_comic_no     = 2475;
         private static $web_link         = 'https://comicmailer.herokuapp.com';
         private static $user_table       = 'users';
         private static $sender_email     = 'pamaan866@gmail.com';
@@ -31,26 +29,6 @@
          */
         public static function get_max_otp() {
             return self::$max_otp;
-        }
-
-        /**
-         * get_min_comic_no gives the minimum comic number which can be fetched from the get_comic function( class-api.php ).
-         * i.e. if range of comic numbers is [1, 100], get_min_comic_no will return 1.
-         *
-         * @return int minimum comic number.
-         */
-        public static function get_min_comic_no() {
-            return self::$min_comic_no;
-        }
-
-        /**
-         * get_max_comic_no gives the maximum comic number which can be fetched from the get_comic function( class-apis.php ).
-         * i.e. if range of comic number is [1, 100], get_max_comic_no will return 100.
-         *
-         * @return int maximum comic number.
-         */
-        public static function get_max_comic_no() {
-            return self::$max_comic_no;
         }
 
         /**

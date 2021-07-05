@@ -46,7 +46,7 @@
          * send_mails sends the mail containing comic in it after 5 minutes or at the same time
          * as per the information provided in the parameter.
          *
-         * @param bool|null $is_scheduled optional. when true mail is send after 5 minutes. false.
+         * @param bool|null $is_scheduled optional. when true mail is send after 5 minutes. Default false.
          * @return void
          */
         public function send_mails( $is_scheduled = false ) {
@@ -54,15 +54,14 @@
             $rows  = $this->db_connection->query( $query );
 
             if ( $rows->num_rows > 0 ) {
-                $comic_number = mt_rand( Constants::get_min_comic_no(), Constants::get_max_comic_no() );
-                $comic        = $this->api->get_comic( $comic_number );
+                $comic = $this->api->get_random_comic();
 
-                if ( isset( $comic->title ) ) {
-                    $subject = "Comic Number $comic_number";
+                if ( isset( $comic ) ) {
+                    $subject = "Comic Number $comic->num";
                     $user    = $rows->fetch_assoc();
 
                     while ( $user ) {
-                        $message    = Templates::mail_template( $comic_number, $comic->title, $comic->img, $user['token'] );
+                        $message    = Templates::mail_template( $comic->num, $comic->title, $comic->img, $user['token'] );
                         $this->api->send_mail( $user['email'], $subject, $message, $is_scheduled, $comic->img );
                         $user = $rows->fetch_assoc();
                     }

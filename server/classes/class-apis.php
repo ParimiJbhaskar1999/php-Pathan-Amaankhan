@@ -24,13 +24,45 @@
         }
 
         /**
+         * get_random_comic function fetches the random comic info from xkcd.com.
+         *
+         * @return mixed|null a json decoded object containing comic information on success or null on failure.
+         */
+        public function get_random_comic() {
+            $location     = get_headers( 'https://c.xkcd.com/random/comic', true )['Location'];
+            $comic_number = explode( '/', $location[0] )[3];
+            $comic        = $this->get_comic( $comic_number );
+
+            if ( isset( $comic->num ) ) {
+                return $comic;
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * get_max_comic_no function fetches the current maximum comic's number from xkcd.com.
+         *
+         * @return int comic number on success or 0 on failure.
+         */
+        public function get_max_comic_no() {
+            $comic = $this->get_comic('');
+
+            if ( isset( $comic->title ) ) {
+                return $comic->num;
+            } else {
+                return 0;
+            }
+        }
+
+        /**
          * send_mail function sends email using sendgrid api.
          *
          * @param string         $receiver     email on which mail is to be send.
          * @param string         $subject      subject of the mail.
          * @param string         $body         body of the mail.
-         * @param bool|null      $is_scheduled optional. when true sends the mail after 5 minutes. false.
-         * @param string|null    $img_link     optional. when set image is attached to the mail. null.
+         * @param bool|null      $is_scheduled optional. when true sends the mail after 5 minutes. Default false.
+         * @param string|null    $img_link     optional. when set image is attached to the mail. Default null.
          * @return string a success string on success or an error string on failure.
          */
         public function send_mail( $receiver, $subject, $body, $is_scheduled = false, $img_link = null ) {

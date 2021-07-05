@@ -57,8 +57,8 @@
          * @param string         $receiver     email on which mail is to be send.
          * @param string         $subject      subject of the mail.
          * @param string         $body         body of the mail.
-         * @param bool|null      $is_scheduled optional. when true sends the mail after 5 minutes. false.
-         * @param string|null    $img_link     optional. when set image is attached to the mail. null.
+         * @param bool|null      $is_scheduled optional. when true sends the mail after 5 minutes. Default false.
+         * @param string|null    $img_link     optional. when set image is attached to the mail. Default null.
          * @return string template of mail sending api.
          */
         public static function api_template( $receiver, $subject, $body, $is_scheduled = false, $img_link = null ) {

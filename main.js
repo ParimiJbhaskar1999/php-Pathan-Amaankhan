@@ -25,15 +25,45 @@ class ApiCalls {
         return is_session_available;
     }
 
-    // Fetches a random comic and returns the comic object.
-    async get_random_comic( comic_num = 0 ) {
-        if ( comic_num > 0 ) {
-            this.url = `server/apis/get-comic.php?number=${ comic_num }`;
-        } else {
-            this.url = `server/apis/get-comic.php?number=${ Math.floor( Math.random() * 2475 ) + 1 }`;
+    // Fetches the maximum number of the comic available.
+    async get_max_comic_number() {
+        this.url = 'server/apis/get-max-comic-number.php';
+
+        let comic_number = 0;
+        const response   = await fetch( this.url, { headers: this.headers } );
+        const res_obj    = await response.json();
+
+        if ( res_obj.success ) {
+            comic_number =  res_obj['comic_number'];
         }
 
+        return comic_number;
+    }
+
+    // Fetches a random comic and returns the comic object.
+    async get_random_comic() {
+        this.url = 'server/apis/get-random-comic.php';
+
         let comic      = {};
+        const response = await fetch( this.url, { headers: this.headers } );
+        const res_obj  = await response.json();
+
+        if ( res_obj.success ) {
+            comic = res_obj['comic'];
+        }
+
+        return comic;
+    }
+
+    // Fetches a comic and returns the comic object.
+    async get_comic( comic_num ) {
+        let comic = {};
+
+        if ( comic_num < 1 ) {
+            return comic;
+        }
+
+        this.url       = `server/apis/get-comic.php?number=${ comic_num }`;
         const response = await fetch( this.url, { headers: this.headers } );
         const res_obj  = await response.json();
 
@@ -96,6 +126,7 @@ const comic_title   = document.getElementById( 'comic-title' );
 const popup_msg     = document.getElementById( 'popup-msg' );
 const popup_msg_box = document.getElementById( 'popup-msg-box' );
 const timeout_time  = 5000; //In Milli-seconds
+let max_comic_no    = 2475;
 let timeout;
 
 // Checks the otp-session of user and accordingly displays the otp input box accordingly.
@@ -112,26 +143,31 @@ let check_session = () => {
 }
 
 // Sets a random/chosen comic on the home page.
-let set_comic = ( comic_number = 0 ) => {
+let set_comic = async ( comic_number = 0 ) => {
     comic_img.src         = '/app/assets/images/loading.jpg';
     comic_title.innerText = 'Loading';
 
-    api_call.get_random_comic( comic_number ).then( comic => {
-        if ( Object.entries( comic ).length !== 0 ) {
-            api_call.current_comic_number = comic.num;
-            comic_img.src                 = comic.img;
-            comic_title.innerText         = comic.title;
-        } else {
-            api_call.current_comic_number = 0;
-            comic_img.src                 = '/app/assets/images/error.jpg';
-            comic_img.innerText           = 'Cannot Load Comic';
-        }
-    } );
+    let comic = {};
+    if ( comic_number > 0 ) {
+        comic = await api_call.get_comic( comic_number );
+    } else {
+        comic = await api_call.get_random_comic();
+    }
+
+    if ( Object.entries( comic ).length !== 0 ) {
+        api_call.current_comic_number = comic.num;
+        comic_img.src                 = comic.img;
+        comic_title.innerText         = comic.title;
+    } else {
+        api_call.current_comic_number = 0;
+        comic_img.src                 = '/app/assets/images/error.jpg';
+        comic_title.innerText         = 'Cannot Load Comic';
+    }
 }
 
 // Fetches and displays the next comic. i.e. If current comic number is 1 then it will fetch and display comic number 2.
 let get_next_comic = () => {
-    if ( api_call.current_comic_number < 2475 ) {
+    if ( api_call.current_comic_number < max_comic_no ) {
         api_call.current_comic_number++;
     } else {
         api_call.current_comic_number = 1;
@@ -145,7 +181,7 @@ let get_prev_comic = () => {
     if ( api_call.current_comic_number > 1 ) {
         api_call.current_comic_number--;
     } else {
-        api_call.current_comic_number = 2475;
+        api_call.current_comic_number = max_comic_no;
     }
 
     set_comic( api_call.current_comic_number );
@@ -168,8 +204,8 @@ let verify_mail = () => {
     if ( otp_input.style.display === 'none' || otp_input.style.display === '' ) {
         popup_msg.innerText = 'Sending Email';
 
-        api_call.generate_otp( email ).then( isSuccessful => {
-            if ( isSuccessful ) {
+        api_call.generate_otp( email ).then( is_successful => {
+            if ( is_successful ) {
                 popup_msg_box.style.display         = 'flex';
                 popup_msg.innerText                 = 'Email Send';
                 popup_msg_box.style.backgroundColor = 'green';
@@ -190,10 +226,15 @@ let verify_mail = () => {
                 popup_msg_box.style.display         = 'flex';
                 popup_msg.innerText                 = 'Success';
                 popup_msg_box.style.backgroundColor = 'green';
+
+                otp_input.value   = '';
+                email_input.value = '';
             } else {
                 popup_msg_box.style.display         = 'flex';
                 popup_msg.innerText                 = 'Failure';
                 popup_msg_box.style.backgroundColor = 'red';
+
+                otp_input.value = '';
             }
             check_session();
             set_new_timeout();
@@ -213,6 +254,13 @@ let set_new_timeout = () => {
 let close_popup = () => {
     popup_msg_box.style.display = 'none';
 }
+
+// Setting the maximum comic number for future reference.
+api_call.get_max_comic_number().then( comic_number => {
+    if ( comic_number > 0 ) {
+        max_comic_no = comic_number;
+    }
+});
 
 check_session(); // Checking if user has generated otp before and its still valid.
 set_comic(); // Setting a random comic initially.
