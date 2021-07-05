@@ -12,7 +12,11 @@
      * @param int    $_POST['otp']   set the user entered otp.
      * @return string|false a JSON encoded string on success or FALSE on failure.
      */
-    if ( isset( $_POST['email'] ) && isset( $_POST['otp'] ) ) {
+    if ( isset( $_POST['email'] ) &&
+         isset( $_POST['otp'] ) &&
+         filter_input( INPUT_POST, 'email', FILTER_VALIDATE_EMAIL ) &&
+         filter_input( INPUT_POST, 'otp', FILTER_VALIDATE_INT )
+    ) {
         $email    = (string) $_POST['email'];
         $otp      = (int) $_POST['otp'];
         $user     = new User();
@@ -33,7 +37,7 @@
     } else {
         $response = array(
             'success' => false,
-            'message' => 'Missing required parameters',
+            'message' => 'Wrong Input.',
         );
     }
 

@@ -11,7 +11,7 @@
      * @param string $_POST['email'] set the user's email.
      * @return string|false a JSON encoded string on success or FALSE on failure.
      */
-    if ( isset( $_POST['email'] ) ) {
+    if ( isset( $_POST['email'] ) && filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL) ) {
         $email     = (string) $_POST['email'];
         $user      = new User();
         $mail_send = $user->send_verification_email( $email );
@@ -31,7 +31,7 @@
     } else {
         $response = array(
             'success' => false,
-            'message' => 'Missing required parameters',
+            'message' => 'Wrong Input.',
         );
     }
 

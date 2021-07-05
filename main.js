@@ -55,8 +55,8 @@ class ApiCalls {
             body   : body,
         } );
 
-        const res_obj  = await response.json();
-        let success = false;
+        const res_obj = await response.json();
+        let success   = false;
 
         if ( res_obj.success ) {
             success = true;
@@ -77,8 +77,8 @@ class ApiCalls {
             body   : body,
         } );
 
-        const res_obj = await  response.json();
-        let success = false;
+        const res_obj = await response.json();
+        let success   = false;
 
         if ( res_obj.success ) {
             success = true;
@@ -95,10 +95,11 @@ const comic_img     = document.getElementById( 'comic-img' );
 const comic_title   = document.getElementById( 'comic-title' );
 const popup_msg     = document.getElementById( 'popup-msg' );
 const popup_msg_box = document.getElementById( 'popup-msg-box' );
+const timeout_time  = 5000; //In Milli-seconds
 let timeout;
 
 // Checks the otp-session of user and accordingly displays the otp input box accordingly.
-let check_session = function () {
+let check_session = () => {
     api_call.check_session().then( is_session_available => {
         if ( is_session_available ) {
             otp_input.style.display       = 'block';
@@ -111,7 +112,7 @@ let check_session = function () {
 }
 
 // Sets a random/chosen comic on the home page.
-let set_comic = function ( comic_number = 0 ) {
+let set_comic = ( comic_number = 0 ) => {
     comic_img.src         = '/app/assets/images/loading.jpg';
     comic_title.innerText = 'Loading';
 
@@ -129,7 +130,7 @@ let set_comic = function ( comic_number = 0 ) {
 }
 
 // Fetches and displays the next comic. i.e. If current comic number is 1 then it will fetch and display comic number 2.
-let get_next_comic = function () {
+let get_next_comic = () => {
     if ( api_call.current_comic_number < 2475 ) {
         api_call.current_comic_number++;
     } else {
@@ -140,7 +141,7 @@ let get_next_comic = function () {
 }
 
 // Fetches and displays the previous comic. i.e. If current comic number is 2 then it will fetch and display comic number 1.
-let get_prev_comic = function () {
+let get_prev_comic = () => {
     if ( api_call.current_comic_number > 1 ) {
         api_call.current_comic_number--;
     } else {
@@ -151,7 +152,7 @@ let get_prev_comic = function () {
 }
 
 // Verifies the email address and shows popup according to the result.
-let verify_mail = function () {
+let verify_mail = () => {
     popup_msg_box.style.backgroundColor = 'grey';
     popup_msg_box.style.display         = 'flex';
 
@@ -160,9 +161,7 @@ let verify_mail = function () {
     if ( email === '' ) {
         popup_msg.innerText                 = 'Email Required';
         popup_msg_box.style.backgroundColor = 'red';
-
-        clearTimeout( timeout );
-        timeout = setTimeout( () => popup_msg_box.style.display = 'none', 5000);
+        set_new_timeout();
         return;
     }
 
@@ -171,37 +170,46 @@ let verify_mail = function () {
 
         api_call.generate_otp( email ).then( isSuccessful => {
             if ( isSuccessful ) {
+                popup_msg_box.style.display         = 'flex';
                 popup_msg.innerText                 = 'Email Send';
                 popup_msg_box.style.backgroundColor = 'green';
             } else {
+                popup_msg_box.style.display         = 'flex';
                 popup_msg.innerText                 = 'Failed';
                 popup_msg_box.style.backgroundColor = 'red';
             }
+            check_session();
+            set_new_timeout();
         } );
     } else {
-        const otp = otp_input.value;
-
-        popup_msg.innerText         = 'Checking OTP';
-        popup_msg_box.style.display = 'flex';
+        const otp           = otp_input.value;
+        popup_msg.innerText = 'Checking OTP';
 
         api_call.check_otp( email, otp ).then( isSuccessful => {
             if ( isSuccessful ) {
+                popup_msg_box.style.display         = 'flex';
                 popup_msg.innerText                 = 'Success';
                 popup_msg_box.style.backgroundColor = 'green';
             } else {
+                popup_msg_box.style.display         = 'flex';
                 popup_msg.innerText                 = 'Failure';
                 popup_msg_box.style.backgroundColor = 'red';
             }
+            check_session();
+            set_new_timeout();
         } );
     }
 
+    set_new_timeout();
+}
+
+let set_new_timeout = () => {
     clearTimeout( timeout );
-    timeout = setTimeout( () => popup_msg_box.style.display = 'none', 5000);
-    check_session();
+    timeout = setTimeout( () => popup_msg_box.style.display = 'none', timeout_time);
 }
 
 // Closes the popup if its open.
-let close_popup = function () {
+let close_popup = () => {
     popup_msg_box.style.display = 'none';
 }
 
