@@ -50,7 +50,7 @@
          * @return void
          */
         public function send_mails( $is_scheduled = false ) {
-            $query = "SELECT email FROM {$this->table} WHERE subscribed=1";
+            $query = "SELECT email FROM {$this->table} WHERE subscribed = 1";
             $rows  = $this->db_connection->query( $query );
 
             if ( $rows->num_rows > 0 ) {

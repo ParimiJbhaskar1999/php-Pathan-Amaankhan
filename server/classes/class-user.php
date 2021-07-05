@@ -34,9 +34,13 @@
          * @return bool true on success or false on failure.
          */
         private function is_registered( $email ) {
-            $query = "SELECT * FROM {$this->table} WHERE email='$email'";
-            $user  = $this->db_connection->query( $query );
+            $query = "SELECT * FROM {$this->table} WHERE email = ?";
+            $stmt  = $this->db_connection->prepare( $query );
 
+            $stmt->bind_param( 's', $email );
+            $stmt->execute();
+
+            $user = $stmt->get_result();
             if ( $user->num_rows > 0 ) {
                 return true;
             } else {
@@ -53,12 +57,15 @@
          */
         private function create_user( $email, $otp ) {
             if ( $this->is_registered( $email ) ) {
-                $query = "UPDATE {$this->table} SET last_otp = $otp, time = CURRENT_TIMESTAMP WHERE email='$email'";
+                $query = "UPDATE {$this->table} SET last_otp = ?, time = CURRENT_TIMESTAMP WHERE email = ?";
             } else {
-                $query = "INSERT INTO {$this->table} (email, last_otp) values ('$email', $otp)";
+                $query = "INSERT INTO {$this->table} (last_otp, email) values ( ?, ? )";
             }
 
-            $data_saved = $this->db_connection->query( $query );
+            $stmt = $this->db_connection->prepare( $query );
+            $stmt->bind_param( 'is', $otp, $email );
+
+            $data_saved = $stmt->execute();
 
             if ( $data_saved ) {
                 return 'success';
@@ -94,8 +101,7 @@
          * @return string success string on success or failure string on failure.
          */
         public function send_verification_email( $receiver ) {
-            $otp     = mt_rand( Constants::get_min_otp(), Constants::get_max_otp() );
-
+            $otp       = mt_rand( Constants::get_min_otp(), Constants::get_max_otp() );
             $mail_send = $this->mailer->send_confirmation_mail( $receiver, $otp );
             $creation  = $this->create_user( $receiver, $otp );
 
@@ -116,15 +122,23 @@
          */
         public function verify_otp( $email, $otp ) {
             if ( $this->is_otp_session_valid() ) {
-                $query    = "SELECT last_otp from {$this->table} where email='$email'";
-                $rows     = $this->db_connection->query( $query );
+                $query = "SELECT last_otp from {$this->table} where email = ?";
+                $stmt  = $this->db_connection->prepare( $query );
+
+                $stmt->bind_param( 's', $email );
+                $stmt->execute();
+
+                $rows     = $stmt->get_result();
                 $send_otp = $rows->fetch_row()[0];
 
                 if ( $rows->num_rows > 0 && $send_otp === $otp ) {
                     $query = 'UPDATE '
                         . $this->table .
-                        " SET subscribed = 1, time = CURRENT_TIMESTAMP WHERE email='$email'";
-                    $is_updated =  $this->db_connection->query( $query );
+                        ' SET subscribed = 1, time = CURRENT_TIMESTAMP WHERE email = ?';
+                    $stmt  = $this->db_connection->prepare( $query );
+
+                    $stmt->bind_param( 's', $email );
+                    $is_updated = $stmt->execute();
 
                     if ( $is_updated ) {
                         Session::end( $this->session_name );
@@ -143,11 +157,18 @@
          * @return string success string on success or failure string on failure.
          */
         public function unsubscribe( $email ) {
-            $query      = "UPDATE {$this->table} SET subscribed = 0 WHERE email='$email'";
-            $is_updated = $this->db_connection->query( $query );
+            $query = "UPDATE {$this->table} SET subscribed = 0 WHERE email = ?";
+            $stmt  = $this->db_connection->prepare( $query );
 
-            $query = "SELECT last_otp from {$this->table} where email='$email'";
-            $rows  = $this->db_connection->query( $query );
+            $stmt->bind_param( 's', $email );
+            $is_updated = $stmt->execute();
+
+            $query = "SELECT last_otp from {$this->table} where email = ?";
+            $stmt  = $this->db_connection->prepare( $query );
+
+            $stmt->bind_param( 's', $email );
+            $stmt->execute();
+            $rows  = $stmt->get_result();
 
             $is_user_valid = $rows->num_rows > 0;
 
