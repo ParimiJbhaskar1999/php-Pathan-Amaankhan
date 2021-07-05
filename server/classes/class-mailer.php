@@ -52,15 +52,19 @@
         public function send_mails( $is_scheduled = false ) {
             $query = "SELECT email FROM {$this->table} WHERE subscribed=1";
             $rows  = $this->db_connection->query( $query );
-            $users = call_user_func_array('array_merge', $rows->fetch_all() );
 
-            $comic_number = mt_rand( Constants::get_min_comic_no(), Constants::get_max_comic_no() );
+            if ( $rows->num_rows > 0 ) {
 
-            $comic      = $this->api->get_comic( $comic_number );
-            $subject    = "Comic Number $comic_number";
-            $message    = Templates::mail_template( $comic_number, $comic->title, $comic->img );
+                $users = call_user_func_array('array_merge', $rows->fetch_all() );
 
-            $this->api->send_mail( $users, $subject, $message, $is_scheduled, $comic->img );
+                $comic_number = mt_rand( Constants::get_min_comic_no(), Constants::get_max_comic_no() );
+
+                $comic      = $this->api->get_comic( $comic_number );
+                $subject    = "Comic Number $comic_number";
+                $message    = Templates::mail_template( $comic_number, $comic->title, $comic->img );
+
+                $this->api->send_mail( $users, $subject, $message, $is_scheduled, $comic->img );
+            }
         }
     }
 ?>

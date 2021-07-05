@@ -11,10 +11,10 @@
      * @param string $_POST['email'] set the user's email.
      * @return string|false a JSON encoded string on success or FALSE on failure.
      */
-    if ( isset( $_POST['email']  ) ) {
-        $email       = $_POST['email'];
-        $user        = new User();
-        $mail_send   = $user->send_verification_email( $email );
+    if ( isset( $_POST['email'] ) ) {
+        $email     = (string) $_POST['email'];
+        $user      = new User();
+        $mail_send = $user->send_verification_email( $email );
 
         if ( $mail_send === 'success' ) {
             $response = array(

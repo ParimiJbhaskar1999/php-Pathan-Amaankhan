@@ -12,11 +12,11 @@
      * @param int    $_POST['otp']   set the user entered otp.
      * @return string|false a JSON encoded string on success or FALSE on failure.
      */
-    if ( isset( $_POST['email']  ) && isset( $_POST['otp'] ) ) {
-        $email       = $_POST['email'];
-        $otp         = $_POST['otp'];
-        $user        = new User();
-        $verified    = $user->verify_otp( $email, $otp );
+    if ( isset( $_POST['email'] ) && isset( $_POST['otp'] ) ) {
+        $email    = (string) $_POST['email'];
+        $otp      = (int) $_POST['otp'];
+        $user     = new User();
+        $verified = $user->verify_otp( $email, $otp );
 
         if ( $verified === 'success' ) {
             $response = array(
