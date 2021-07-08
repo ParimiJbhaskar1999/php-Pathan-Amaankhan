@@ -29,5 +29,43 @@
                 ? 'Connection Error: ' . $this->connection->connect_error
                 : $this->connection;
         }
+
+        /**
+         * get_cron_last_ran_time gives the time at which cron-job was last ran.
+         *
+         * @return int current time on failure or last ran time on success.
+         */
+        public function get_cron_last_ran_time() {
+            $query           = 'SELECT cron_last_ran FROM cron_table where id = 1';
+            $cron_last_ran   = strtotime( 'now' );
+            $result          = $this->connection->query( $query );
+
+            if ( $result->num_rows > 0 ) {
+                $row           = $result->fetch_assoc();
+                $cron_last_ran = (int) $row['cron_last_ran'];
+            }
+
+            return $cron_last_ran;
+        }
+
+        /**
+         * set_cron_last_ran_time sets the time at which cron-job was ran.
+         *
+         * @param $time int time at which cron-job is ran.
+         * @return string success string on success and failure string on failure.
+         */
+        public function set_cron_last_ran_time( $time ) {
+            $query = 'UPDATE cron_table SET cron_last_ran = ? WHERE id = 1';
+            $stmt  = $this->connection->prepare( $query );
+
+            $stmt->bind_param( 'i', $time );
+            $data_saved = $stmt->execute();
+
+            if ( $data_saved ) {
+                return 'success';
+            } else {
+                return 'failure';
+            }
+        }
     }
 ?>

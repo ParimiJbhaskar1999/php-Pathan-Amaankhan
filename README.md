@@ -6,9 +6,9 @@
   - [Large Screen](#web-view)
   - [Mobile Screen](#mobile-view)
 - [Technologies Used](#technologies-used)
-- [Table Structure](#table-structure)
-  - [Table](#table)
-  - [MySql](#mysql)
+- [Table Structures](#table-structure)
+  - [Tables](#table)
+  - [MySqls](#mysql)
 - [Flow Diagram](#flow-diagram)
 - [How To Run??](#how-to-run)
   - [For Windows](#for-windows)
@@ -67,14 +67,17 @@
 :point_right: **[HTML](https://www.w3schools.com/html/)** <br />
 :point_right: **[CSS](https://css-tricks.com/almanac/)** <br />
 :point_right: **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)** <br />
-:point_right: **[PHP](https://www.w3schools.com/Php/)**
+:point_right: **[PHP](https://www.w3schools.com/Php/)** <br />
+:point_right: **[MySQL](https://www.w3schools.com/MySQL/)**
 
 
 <a id="table-structure"></a>
-### Table Structure
+### Table Structures
 
 <a id="table"></a>
-- ##### Table 
+- ##### Tables
+Users Table
+
 |    Field   |     Type    |  Null |  Key  |      Default      |       Extra       |
 | :--------: | :---------: | :---: | :---: | :---------------: | :---------------: |
 |   email    | varchar(50) |  NO   |  PRI  |                   |                   |
@@ -83,8 +86,19 @@
 | subscribed |    int(1)   |  NO   |       |        0          |                   |
 |   token    | varchar(50) |  YES  |       |                   |                   |
 
+Cron Table
+
+|     Field     |   Type  |  Null  |  Key  | Default |      Extra     |
+| :-----------: | :-----: | :----: | :---: | :-----: | :------------: |
+|      id       | int(10) |   NO   |  PRI  |         | auto_increment |
+| cron_last_ran | int(50) |   No   |       |         |                |
+
+
 <a id="mysql"></a>
 - ##### MySql
+
+Users Table
+
 ```mysql
 CREATE TABLE users (
   email varchar(50) NOT NULL,
@@ -96,6 +110,14 @@ CREATE TABLE users (
 );
 ```
 
+Cron Table
+```mysql
+CREATE TABLE cron_table (
+  id int(10) NOT NULL AUTO_INCREMENT,
+  cron_last_ran int(50) NOT NULL,
+  PRIMARY KEY (id)
+);
+```
 
 <a id="flow-diagram"></a>
 ### Flow Diagram
