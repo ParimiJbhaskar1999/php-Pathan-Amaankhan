@@ -80,10 +80,10 @@ let callback_unsubscribe_api = ( result ) => {
                                          To redirecet manually <a href="/">Click Here</a>`;
         } else {
             lower_container.innerHTML = `Unsubscribing Failed(Check if you have alread unsubscribed the service).<br>
-                                         If still facing the issue please write to
-                                         <form action="mailto:amaanpathan5@gmail.com" target="_blank" enctype="text/plain">
-                                            <input type="submit" value="Developer">
-                                         </form>
+                                         If still facing the issue please write to 
+                                         <div style="text-decoration: underline;font-style: italic;">
+                                            amaanpathan5@gmail.com
+                                         </div><br>
                                          You will be automatically redirected after ${timer_time} seconds.<br>
                                          To redirecet manually <a href="/">Click Here</a>`;
         }
