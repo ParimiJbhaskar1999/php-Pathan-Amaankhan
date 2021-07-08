@@ -87,6 +87,44 @@
         }
 
         /**
+         * get_cron_last_ran_time gives the time at which cron-job was last ran.
+         *
+         * @return int current time on failure or last ran time on success.
+         */
+        public static function get_cron_last_ran_time() {
+            $file_path = dirname( __DIR__ ) . '/cron_last_ran.txt';
+            $time      = strtotime( 'now' );
+
+            if ( file_exists( $file_path ) ) {
+                $file = fopen( $file_path, 'r');
+                $time = (int) fread( $file, filesize( $file_path ) );
+                fclose( $file );
+            }
+
+            return $time;
+        }
+
+        /**
+         * set_cron_last_ran_time sets the time at which cron-job was ran.
+         *
+         * @param $time int time at which cron-job is ran.
+         * @return string success string on success and failure string on failure.
+         */
+        public static function set_cron_last_ran_time( $time ) {
+            $file_path = dirname( __DIR__ ) . '/cron_last_ran.txt';
+
+            if ( file_exists( $file_path ) ) {
+                $file = fopen( $file_path, 'w' );
+                fwrite( $file, strval( $time ) );
+                fclose( $file );
+
+                return 'success';
+            }
+
+            return 'failure';
+        }
+
+        /**
          * get_mail_secret gives the api key of Sendgrid api.
          *
          * @return string api key for sending mail.
